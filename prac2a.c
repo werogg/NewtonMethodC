@@ -27,7 +27,7 @@ int main(void)
 
 
 
-	printf("S'executara newton amb:\niter = %d\nx = %f\ntol = %f", iter, x, tol);
+	printf("S'executara newton amb:\niter = %d\nx = %f\ntol = %f\n", iter, x, tol);
 
     newton(x, sol, tol, iter);
 

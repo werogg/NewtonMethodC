@@ -1,5 +1,4 @@
 /* OTERO MARTIN JOEL - DNI: 53637165S */
-# define M_PI           3.14159265358979323846  /* pi */
 #include "prac2funs.h"
 #include <math.h>
 #include <stdlib.h>
@@ -81,7 +80,7 @@ void prodMatMat(int m, int n, int p, double **A, double **B, double **C)
 double f(double x)
 {
 	/* PART 1 */
-	return x*x + sin(x) - M_PI;
+	return x*x + sin(x) - acos(-1);
 	/*return 1 - log(x);
 	return sqrt(x) - exp(-x);
 	return sinh(x) - sin(x);
@@ -107,7 +106,7 @@ double f(double x)
 
 double df(double x) 
 {
-	return x*x*cos(x);
+	return 2*x+cos(x);
 	/*
     return 1 - ln(x);
 	return 
@@ -120,7 +119,7 @@ int newton(double x, double *sol, double tol, int iter)
 
 	double fdf, next_x;
 
-    for (n = 1; n <= iter; iter++)
+    for (n = 0; n <= iter; iter++)
     {
         fdf = f(x) / df(x);
         next_x = x - fdf;
