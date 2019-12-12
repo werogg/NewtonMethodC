@@ -36,6 +36,8 @@ int newton(double x, double *sol, double tol, int iter)
         fdf = f(x) / df(x);
         next_x = x - fdf;
 
+		if (abs(df(x)) < tol) return 1;
+
         if (abs(next_x-x) < tol || abs(f(x)) < tol)
         {
             *sol = next_x;
@@ -73,9 +75,16 @@ int main(void)
 
 	printf("S'executara newton amb:\niter = %d\nx = %f\ntol = %f\n", iter, x, tol);
 
-    newton(x, sol, tol, iter);
+    int s = newton(x, sol, tol, iter);
 
-    printf("Sol = %f", *sol);
+	if (s == 0)
+	{
+		printf("Sol = %f", *sol);
+	}
+	else
+	{
+		printf("No s'ha trobat una aproximació prou bona del zero.\n");
+	}
 
 	return 0;
 
