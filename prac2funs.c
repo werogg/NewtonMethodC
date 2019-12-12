@@ -108,9 +108,10 @@ double df(double x)
 {
 	return 2*x+cos(x);
 	/*
-    return 1 - ln(x);
-	return 
-    */
+    return -1/x;
+	return exp(-x) + 1/(2*sqrt(x));
+	return cosh(x) - cos(x);
+	*/
 }
 
 int newton(double x, double *sol, double tol, int iter)

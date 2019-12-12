@@ -6,23 +6,38 @@
 
 double f(double x)
 {
-	/* PART 1 */
-	return x*x + sin(x) - acos(-1);
-	/*return 1 - log(x);
-	return sqrt(x) - exp(-x);
-	return sinh(x) - sin(x);
+	/* PART 2 */
+
+    /*
+	return x*x - 1
+	return pow(x, 3) - x
+	return 3*pow(x, 3) - x + 1
+	return pow(x, 4) + 1
+    */
+
+	/*
+	int i;
+	double n = 1;
+	for (i = 1; i <= 6 ; i++)
+	{
+		n *= (x - (10 * i) / (i + 1));
+	}
+	return n;
 	*/
+
+	/*
+	 int i;
+	 double n = 1;
+	 for (i = 1; i <= 6; i++) {
+		 n*= (x - (i + 1)/(10*i));
+	 }
+	 */
 }
 
 double df(double x) 
 {
-	/* PART 1 */
-	return 2*x+cos(x);
-	/*
-    return -1/x;
-	return exp(-x) + 1/(2*sqrt(x));
-	return cosh(x) - cos(x);
-	*/
+	/* PART 2 */
+
 }
 
 int newton(double x, double *sol, double tol, int iter)
@@ -49,7 +64,7 @@ int newton(double x, double *sol, double tol, int iter)
 
 int main(void)
 {
-	double *sol, x, tol;
+	double *sol, x, tol, M, m, h, *I;
 	int iter;
     
 	sol = (double *)malloc(sizeof(double *));
@@ -60,8 +75,11 @@ int main(void)
 		exit(2);
     }
 
-	printf("Doneu el valor de x\n");
-	scanf("%lf", &x);
+	printf("Doneu el valor de M\n");
+	scanf("%lf", &M);
+
+	printf("Doneu el valor de h\n");
+	scanf("%lf", &h);
 
     printf("Doneu el valor de tolerancia\n");
 	scanf("%lf", &tol);
@@ -69,7 +87,8 @@ int main(void)
     printf("Doneu la quantitat d'iteracions\n");
 	scanf("%d", &iter);
 
-
+	x = -M;
+	h = 2*M/m
 
 	printf("S'executara newton amb:\niter = %d\nx = %f\ntol = %f\n", iter, x, tol);
 
