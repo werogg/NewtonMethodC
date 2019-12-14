@@ -36,9 +36,9 @@ int newton(double x, double *sol, double tol, int iter)
         fdf = f(x) / df(x);
         next_x = x - fdf;
 
-		if (abs(df(x)) < tol) return 1;
+		if (fabs(df(x)) < tol) return 1;
 
-        if (abs(next_x-x) < tol || abs(f(x)) < tol)
+        if (fabs(next_x-x) < tol || fabs(f(x)) < tol)
         {
             *sol = next_x;
             return 0;

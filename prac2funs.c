@@ -1,8 +1,38 @@
 /* OTERO MARTIN JOEL - DNI: 53637165S */
 #include "prac2funs.h"
-#include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+
+int ldlt(int n, double **A, double tol)
+{
+    int k, j, i;
+
+    for (k = 0; k <= n-1; k++)
+    {
+        for (j = 0; j <= k-1; j++)
+        {
+            A[k][k] -= (A[k][j]*A[k][j])*A[j][j];
+        }
+
+        for (i = k+1; i <= n-1; i++)
+        {
+            for (j = 0; j <= k-1; j++)
+            {
+                A[i][k] -= (A[i][j]*A[k][j]*A[j][j]);
+            }
+            A[i][k] = A[i][k] * (1/A[k][k]);
+            A[k][i] = A[i][k];
+        }
+    }
+    
+    for (k = 0; k < n; k++)
+    {
+        if (fabs(A[k][k]) < tol) return 1;
+    }
+
+    return 0;
+}
 
 void resTinf(int n, double **L, double *b, double *x)
 {
@@ -75,63 +105,4 @@ void prodMatMat(int m, int n, int p, double **A, double **B, double **C)
 	}
 
 	
-}
-
-double f(double x)
-{
-	/* PART 1 */
-	return x*x + sin(x) - acos(-1);
-	/*return 1 - log(x);
-	return sqrt(x) - exp(-x);
-	return sinh(x) - sin(x);
-	/* PART 2 */
-
-    /*
-	return x*x - 1
-	return x*x*x - x
-	return 3*x*x*x - x + 1
-	return x*x*x*x + 1
-    */
-
-	/*
-	int i;
-	double n = 1;
-	for (i = 1; i <= 6 ; i++)
-	{
-		n *= (x - (10 * i) / (i + 1));
-	}
-	return n;
-	*/
-}
-
-double df(double x) 
-{
-	return 2*x+cos(x);
-	/*
-    return -1/x;
-	return exp(-x) + 1/(2*sqrt(x));
-	return cosh(x) - cos(x);
-	*/
-}
-
-int newton(double x, double *sol, double tol, int iter)
-{
-	int n;
-
-	double fdf, next_x;
-
-    for (n = 0; n <= iter; iter++)
-    {
-        fdf = f(x) / df(x);
-        next_x = x - fdf;
-
-        if (abs(next_x-x) < tol || abs(f(x)) < tol)
-        {
-            *sol = next_x;
-            return 0;
-        }
-
-        x = next_x;
-    }
-	return 1;
 }
