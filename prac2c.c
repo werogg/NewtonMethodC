@@ -190,6 +190,15 @@ int main(void)
 		}
 	}
 
+	/* Alliberem la memoria reservada */
+	for (i = 0; i < 100; i++)
+	{
+		free(Q[i]);
+	}
+
+	free(Q);
+	free(sol);
+
 	return 0;
 
 }

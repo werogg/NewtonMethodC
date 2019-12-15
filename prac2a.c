@@ -92,6 +92,8 @@ int main(void)
 		printf("No s'ha trobat una aproximació prou bona del zero.\n");
 	}
 
+	/* Alliberem la memoria reservada */ 
+	free(sol);
 	return 0;
 
 

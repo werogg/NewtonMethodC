@@ -116,6 +116,9 @@ int main(void)
 		
 	}
 
+	/* Alliberem la memoria reservada */ 
+	free(sol);
+
 	return 0;
 
 
