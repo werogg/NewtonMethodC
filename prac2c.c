@@ -120,14 +120,44 @@ int newton3(double *x, double *sol, double tol, int iter)
 					sol[j] = next_x[j];
 				}
 
+				/* Alliberem la memoria asignada */
+				for (i = 0; i < 3; i++)
+				{
+					free(dFtv[i]);
+					free(dFv[i]);
+					free(dFtvdFv[i]);
+				}
+
+				free(Fv);
+				free(dFtvFv);
+				free(dx);
+				free(y);
+				free(next_x);
+				free(cond1);
+
 				return 0;
 			}
 
 			/* Seguent iteracio */
 			x = next_x;
 		}
-		return 1; /* No retorn */
 	}
+
+	/* Alliberem la memoria asignada*/
+	for (i = 0; i < 3; i++)
+		{
+			free(dFtv[i]);
+			free(dFv[i]);
+			free(dFtvdFv[i]);
+		}
+
+		free(Fv);
+		free(dFtvFv);
+		free(dx);
+		free(y);
+		free(next_x);
+		free(cond1);
+
 	return 1; /* No retorn */
 }
 
