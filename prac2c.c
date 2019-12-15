@@ -47,6 +47,7 @@ void dF(double *x, double **df)
 
 int newton3(double *x, double *sol, double tol, int iter)
 {
+	/* Inicialitzem les variables */
 	double **dFtv, **dFv, **dFtvdFv, *Fv, *dFtvFv, *dx, *y, *next_x, *cond1, norma_cond1, norma_cond2;
 	int i, j, n, no_possible;
 
@@ -71,20 +72,26 @@ int newton3(double *x, double *sol, double tol, int iter)
 	dF(x, dFv);
 	F(x, Fv);
 
+	/* Fem la transposada de dF */
 	for (i = 0; i < 3; i++)
         for (j = 0; j < 3; j++)
             dFtv[j][i] = dFv[i][j];
 
+	/* Fem les operacions per tenir un sistema de matrius simetriques */
 	prodMatMat(3, 3, 3, dFtv, dFv, dFtvdFv);
 	prodMatVec(3, 3, dFtv, Fv, dFtvFv);
 
+	/* Descomposem la matriu LDLt */
 	no_possible = ldlt(3, dFtvdFv, tol);
 
+	/* Continuem amb el programa si ha estat posible descomposar la matriu en LDLt*/
 	if (no_possible == 1) {
-		printf("No ha estat possible descomposar la matriu A en LDL^t amb la donada tolerancia\n");
+		printf("No ha estat possible descomposar la matriu en LDL^t amb la donada tolerancia\n");
 	}
 	else
 	{
+		/* Resolem el sistema matricial amb els mètodes de la pràctica 1 */
+
 		resTinf(3, dFtvdFv, dFtvFv, dx);
 
 		for (i=0; i<3; i++) {
@@ -93,6 +100,7 @@ int newton3(double *x, double *sol, double tol, int iter)
 
         resTsup(3, dFtvdFv, y, dx);
 
+		/* Fem newton amb les xs inicials i el resultat del sistema anterior */
 		for (n = 0; n <= iter; iter++)
 		{
 			for (i = 0; i < 3; i++)
@@ -104,6 +112,7 @@ int newton3(double *x, double *sol, double tol, int iter)
 			norma_cond1 = norma2(3, cond1);
 			norma_cond2 = norma2(3, Fv);
 
+			/* Condicions de retorn */
 			if (fabs(norma_cond1) < tol || fabs(norma_cond2) < tol)
 			{
 				int j;
@@ -114,15 +123,17 @@ int newton3(double *x, double *sol, double tol, int iter)
 				return 0;
 			}
 
+			/* Seguent iteracio */
 			x = next_x;
 		}
-		return 1;
+		return 1; /* No retorn */
 	}
-	return 1;
+	return 1; /* No retorn */
 }
 
 int main(void)
 {
+	/* Inicialitzem les variables */
 	double *sol, **Q, tol, Qi, Qf;
 	int iter, i;
 
@@ -140,6 +151,7 @@ int main(void)
 		exit(2);
     }
 
+	/* Demanem les dades per consola */
     printf("Doneu el valor de tolerancia\n");
 	scanf("%lf", &tol);
 
@@ -150,6 +162,7 @@ int main(void)
 	scanf("%lf", &Qi);
 	scanf("%lf", &Qf);
 
+	/* Generem 100 condicions inicials per al cub Q */
 	for (i = 0; i < 100; i++)
     {
 		srand48(i);
@@ -160,6 +173,7 @@ int main(void)
 		Q[i][2] = (drand48() - 0.5) * 2.0;
 	}
 
+	/* Fem newton3 per a cadascuna d'aquestes 100 condicions*/
 	for  (i = 0; i < 100; i++)
 	{
 		if (!newton3(Q[i], sol, tol, iter))

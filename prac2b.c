@@ -45,21 +45,25 @@ int newton(double x, double *sol, double tol, int iter)
         fdf = f(x) / df(x);
         next_x = x - fdf;
 
+		/* Condició de no retorn */
 		if (fabs(df(x)) < tol) return 1;
 
+		/* Condicions de retorn */
         if (fabs(next_x-x) < tol || fabs(f(x)) < tol)
         {
             *sol = next_x;
             return 0;
         }
 
+		/* Seguent iteració */
         x = next_x;
     }
-	return 1;
+	return 1; /* No retorn */
 }
 
 int main(void)
 {
+	/* Inicialització de les dades */
 	double *sol, x, tol, M, m, h;
 	int iter;
     
@@ -84,12 +88,14 @@ int main(void)
 
 	h = 2*M/m;
 
+	/* Iterem per l'interval [-M, M] amb pas h */
 	for (x = -M; x <= M; x += h)
 	{
 		int s = newton(x, sol, tol, iter);
 
-		if (s == 0)
+		if (s == 0) /* Si hi ha solució */
 		{
+			/* Printem solucions per a <=-h i per a >=h */
 			if (x <= -h)
 			{
 				printf("x <= -h\n");

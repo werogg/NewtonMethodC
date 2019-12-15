@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-
+/* Seleccionar funció mitjançant comentaris */
 double f(double x)
 {
 	/* PART 1 */
@@ -14,6 +14,7 @@ double f(double x)
 	*/
 }
 
+/* Seleccionar funció derivada mitjançant comentaris */
 double df(double x) 
 {
 	/* PART 1 */
@@ -36,21 +37,25 @@ int newton(double x, double *sol, double tol, int iter)
         fdf = f(x) / df(x);
         next_x = x - fdf;
 
+		/* Si el valor absolut de la derivada es < que tolerancia no hi ha zero */
 		if (fabs(df(x)) < tol) return 1;
 
+		/* Condicions a les que si hi ha zero */
         if (fabs(next_x-x) < tol || fabs(f(x)) < tol)
         {
             *sol = next_x;
             return 0;
         }
 
+		/* Seguent iteració */
         x = next_x;
     }
-	return 1;
+	return 1; /* Si arribem al final del "for" no hi ha zero */
 }
 
 int main(void)
 {
+	/* Inicialitzem les variables */
 	double *sol, x, tol;
 	int iter;
     
@@ -62,6 +67,7 @@ int main(void)
 		exit(2);
     }
 
+	/* Demanem les variables per consola */
 	printf("Doneu el valor de x\n");
 	scanf("%lf", &x);
 
@@ -72,7 +78,7 @@ int main(void)
 	scanf("%d", &iter);
 
 
-
+	/* Execució de newton per a uns valors donats */
 	printf("S'executara newton amb:\niter = %d\nx = %f\ntol = %f\n", iter, x, tol);
 
     int s = newton(x, sol, tol, iter);
