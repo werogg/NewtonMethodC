@@ -4,67 +4,18 @@
 #include <stdlib.h>
 #include <math.h>
 
-/* Funcions PART 2 */
-double f(double x)
-{
-	return x*x - 1;
-	
-    /*
-	a)
-	b) return pow(x, 3) - x;
-	c) return 3*pow(x, 3) - x + 1;
-	d) return pow(x, 4) + 1;
-	e) return 1000000/7 + (126*(pow(x,6)) - 5553*(pow(x,5)) + 101410*(pow(x,4)) - 981775*(pow(x, 3)) + 5311000*(pow(x, 2)) - 15210000*x) / 126;
-	f) return 7/1000000 + (18000000*(pow(x,6)) - 15210000*(pow(x,5)) + 5311000*(pow(x,4)) - 981775*(pow(x,3)) + 101410*(pow(x,2)) - 5553*x) / 18000000;
-    */
-}
-
-/* Funcions derivades PART 2 */
-double df(double x) 
-{
-	return 2*x;
-
-	/*
-	a)
-	b) return 3*pow(x, 2) - 1;
-	c) return 9*pow(x, 2) - 1;
-	d) return 4*pow(x, 3);
-	e) return 1/126 * (756*pow(x, 5) - 27765*pow(x, 4) + 405640*pow(x, 3) - 2945325*pow(x, 2) + 10622000*x - 15210000);
-	f) return 1/18000000 * (108000000*pow(x,5) - 76050000*pow(x,4) + 21244000*pow(x,3) - 2945325*pow(x,2) + 202820*x - 5553);
-	*/
-
-}
-
-int newton(double x, double *sol, double tol, int iter)
-{
-	int n;
-
-	double fdf, next_x;
-
-    for (n = 0; n <= iter; iter++)
-    {
-        fdf = f(x) / df(x);
-        next_x = x - fdf;
-
-		if (abs(df(x)) < tol) return 1;
-
-        if (abs(next_x-x) < tol || abs(f(x)) < tol)
-        {
-            *sol = next_x;
-            return 0;
-        }
-
-        x = next_x;
-    }
-	return 1;
-}
-
 void F(double *x, double *f)
 {
 	/* Funcions Sistema A */
 	f[0] = x[0] + x[1] + x[2] - 1;
 	f[1] = x[1] + x[2];
 	f[2] = pow(x[0], 2) + 0.75*x[1];
+
+	/* Funcions Sistema B
+	f[0] = pow(x[0], 2) + pow(x[1], 2) + pow(x[2], 2) - 1;
+	f[1] = (1 / 4) * pow((x[0] - x[1]), 2) + pow((x[0] + x[1]), 2) + pow(x[2], 2) - 1;
+	f[2] = pow((x[0] - x[1]), 2) + pow((x[0] + x[1]), 2) + (1 / 4) * pow(x[2], 2) -1;
+	*/
 }
 
 void dF(double *x, double **df)
@@ -80,6 +31,18 @@ void dF(double *x, double **df)
 	df[2][0] = 2*x[0];
 	df[2][1] = 0.75;
 	df[2][2] = 0;
+
+	/* Derivades Parcials Sistema B
+	for (i = 0; i < 3; i++)
+		df[0][i] = 2 * x[i];
+	df[1][0] = (5 * x[0] + 3 * x[1]) / 2;
+	df[1][1] = (3 * x[0] + 5 * x[1]) / 2;
+	df[1][2] = 2 * x[2];
+	for (i = 0; i < 2; i++)
+		df[2][i] = 4 * x[i];
+
+	df[2][2] = (2 * x[2]) / 7;
+	*/
 }
 
 int newton3(double *x, double *sol, double tol, int iter)
@@ -130,11 +93,6 @@ int newton3(double *x, double *sol, double tol, int iter)
 
         resTsup(3, dFtvdFv, y, dx);
 
-        printf("Vector Dx:\n");
-	    for (i = 0; i < 3; i++)
-		    printf(" %16.7e\n", dx[i]);
-
-
 		for (n = 0; n <= iter; iter++)
 		{
 			for (i = 0; i < 3; i++)
@@ -148,7 +106,11 @@ int newton3(double *x, double *sol, double tol, int iter)
 
 			if (fabs(norma_cond1) < tol || fabs(norma_cond2) < tol)
 			{
-				*sol = *next_x;
+				int j;
+				for (j = 0; j < 3; j++) {
+					sol[j] = next_x[j];
+				}
+
 				return 0;
 			}
 
@@ -202,9 +164,11 @@ int main(void)
 	{
 		if (!newton3(Q[i], sol, tol, iter))
 		{
-			int i;
-			for (i = 0; i < 3; i++)
-				printf("x[%d] = %f\n", i, sol[i]);
+
+			printf("Aproximació a x = (%f, %f, %f)\n", Q[i][0], Q[i][1], Q[i][2]);
+			printf("x = %f\n", sol[0]);
+			printf("y = %f\n", sol[1]);
+			printf("z = %f\n", sol[2]);
 		}
 		else
 		{
