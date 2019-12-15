@@ -57,7 +57,7 @@ int main(void)
 {
 	/* Inicialitzem les variables */
 	double *sol, x, tol;
-	int iter;
+	int iter, s;
     
 	sol = (double *)malloc(sizeof(double *));
 
@@ -81,7 +81,7 @@ int main(void)
 	/* Execució de newton per a uns valors donats */
 	printf("S'executara newton amb:\niter = %d\nx = %f\ntol = %f\n", iter, x, tol);
 
-    int s = newton(x, sol, tol, iter);
+	s = newton(x, sol, tol, iter);
 
 	if (s == 0)
 	{
